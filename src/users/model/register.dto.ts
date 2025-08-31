@@ -6,41 +6,47 @@ export class RegisterDto {
 
     @IsString()
     @IsNotEmpty()
-    readonly name: string;
+    name: string;
 
     @IsString()
     @IsNotEmpty()
     @IsEmail()
-    readonly email: string;
+    email: string;
 
     @IsString()
     @IsNotEmpty()
-    readonly password: string;
- 
-    @IsString()
-    @IsNotEmpty()
-    readonly phoneNumber: string;
+    password: string;
 
     @IsString()
     @IsNotEmpty()
-    readonly address: string;
+    phoneNumber: string;
 
     @IsString()
     @IsNotEmpty()
-    readonly city: string;
+    address: string;
 
     @IsString()
     @IsNotEmpty()
-    readonly country: string;
+    city: string;
 
     @IsString()
     @IsNotEmpty()
-    readonly accountName: string;
+    country: string;
 
     @IsString()
     @IsNotEmpty()
-    readonly accountNumber: string;
+    accountName: string;
+
+    @IsString()
+    @IsNotEmpty()
+
+    accountNumber: string;
+
+    @IsString()
+    @IsNotEmpty()
+    bankName: string;
 
     @IsEnum(Role)
-    readonly role: Role;
+    role: Role;
 }
+

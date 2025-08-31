@@ -15,14 +15,14 @@ export class User {
     @Column()
         name: string
 
-    @Column()
-        email: string
+    @Column({ unique: true })
+    email: string
 
     @Column()
         password: string
 
-    @Column()
-        phoneNumber:string
+    @Column({ unique: true })
+    phoneNumber: string
 
     @Column()
         address:string
@@ -38,6 +38,9 @@ export class User {
 
     @Column()
         accountNumber:string
+
+    @Column()
+        bankName: string;
 
     @Column({
         type: "enum",

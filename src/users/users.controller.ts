@@ -3,6 +3,7 @@ import { UsersService } from './users.service';
 import { User, Role } from './model/user.model';
 import { RolesGuard } from './role.guard';
 import { Roles } from './role.decorator';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
 export class UsersController {
@@ -18,8 +19,8 @@ export class UsersController {
         return await this.usersService.login(user);
     }
 
-    
-    @UseGuards(RolesGuard)
+
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
     @Roles(Role.ADMIN)
     @Get()
     async findAll(): Promise<User[]> {
