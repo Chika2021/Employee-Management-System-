@@ -1,11 +1,11 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Client } from './entities/client.entity';
 import { Repository } from 'typeorm';
 import { ChildProcessWithoutNullStreams } from 'child_process';
-import { User } from 'src/users/model/user.model';
+import { Role, User } from 'src/users/model/user.model';
 
 
 @Injectable()
@@ -47,9 +47,18 @@ export class ClientService {
     return await this.clientRepository.findOne({where: {id}, relations: ['projects', 'user']});
   }
 
-  async update(id: number, updateClientDto: UpdateClientDto): Promise<Client | null> {
-    await this.clientRepository.update(id, updateClientDto);
-    return await this.clientRepository.findOne({ where: { id }, relations: ['projects', 'user'] });
+  async update(id: number, updateClientDto: UpdateClientDto, user: User, role: Role): Promise<Client | null> {
+    const client = await this.clientRepository.findOne({ where: { id } });
+    if (!client) {
+      throw new NotFoundException('Client Not Found');
+    }
+    // 🔒 Enforce ownership
+    if (role !== 'admin' && client.user.id !== user.id) {
+      throw new ForbiddenException('You do not have permission to update this client');
+    }
+    Object.assign(client, updateClientDto, client);
+
+     return await this.clientRepository.save(client);
   }
 
   async remove(id: number) {

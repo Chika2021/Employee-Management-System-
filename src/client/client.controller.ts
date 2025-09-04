@@ -37,8 +37,10 @@ export class ClientController {
 
   @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateClientDto: UpdateClientDto) {
-    return this.clientService.update(+id, updateClientDto);
+  update(@Param('id') id: string, @Body() updateClientDto: UpdateClientDto, @Request() req ) {
+    const user = req.user.id
+    const role = req.user.role
+    return this.clientService.update(+id, updateClientDto, user, role);
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -60,5 +62,5 @@ export class ClientController {
   async createClientProject(@Param('id') id:string , @Body() project: Project) {
     return this.projectsService.createForClient(Number(id), project)
   }
-  
+
 }
