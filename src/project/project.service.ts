@@ -55,13 +55,15 @@ export class ProjectService {
   return await this.clientRepository.find({where: {id:clientId}, relations: ['projects']})
   }
 
-  async createForClient(clientId: number, createProjectDto: CreateProjectDto) {
+  async createForClient(clientId: number, createProjectDto: Project) {
     const client = await this.clientRepository.findOne({ where: { id: clientId } });
     if (!client) {
       throw new NotFoundException('Client Not Found');
     }
-    const project = this.projectRepository.create({ ...createProjectDto, client });
+    const amount = Number(createProjectDto.price) * 0.15; // Calculate 15% of the price
+    const project = this.projectRepository.create({ ...createProjectDto, amount, client });
     return await this.projectRepository.save(project);
   }
-  
+
+
 }

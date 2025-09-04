@@ -18,6 +18,8 @@ export class Project {
 
     @Column()
         projectDescription: string;
+    @Column()
+        price: number
 
     @Column({
         type: 'enum',
@@ -26,9 +28,13 @@ export class Project {
     })
     status: ProjectStatus;
 
+    @Column()
+    amount: number;
+
     @ManyToOne(() => Client, client => client.projects)
         client: Client;
 
-    
+
+
 }
 
