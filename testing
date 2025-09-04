@@ -1,0 +1,17 @@
+4️⃣ Example Requests
+Create a project for a client
+POST /clients/1/projects
+{
+  "title": "Website Development",
+  "description": "E-commerce site",
+  "status": "ongoing"
+}
+
+
+👉 This will automatically link the new project to client with id=1.
+
+Get all projects for a client
+GET /clients/1/projects
+
+
+👉 Returns all projects for client 1.

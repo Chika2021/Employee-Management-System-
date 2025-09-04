@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Client } from "src/client/entities/client.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 export enum Role {
     ADMIN = "admin",
@@ -48,6 +49,10 @@ export class User {
         default: Role.USER
     })
         role: Role
+
+    @OneToMany(() => Client, client => client.user)
+    clients: Client[];
+
 
 
 }

@@ -4,6 +4,11 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/model/user.model';
+import { ClientModule } from './client/client.module';
+import { ProjectModule } from './project/project.module';
+import { Client } from './client/entities/client.entity';
+import { Project } from './project/entities/project.entity';
+
 
 @Module({
 
@@ -15,10 +20,12 @@ import { User } from './users/model/user.model';
       username: 'root',
       password: '',
       database: 'employee_db',
-      entities: [User],
+  entities: [User, Client, Project],
       synchronize: true,
     }),
-    UsersModule
+    UsersModule,
+    ClientModule,
+    ProjectModule
   ],
   controllers: [AppController],
   providers: [AppService],
