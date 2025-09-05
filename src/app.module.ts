@@ -9,23 +9,21 @@ import { ProjectModule } from './project/project.module';
 import { Client } from './client/entities/client.entity';
 import { Project } from './project/entities/project.entity';
 
-
 @Module({
-
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: '',
-      database: 'employee_db',
-  entities: [User, Client, Project],
+      host: process.env.DB_HOST || 'localhost',
+      port: Number(process.env.DB_PORT) || 3306,
+      username: process.env.DB_USER || 'root',
+      password: process.env.DB_PASS || '',
+      database: process.env.DB_NAME || 'employee_db',
+      entities: [User, Client, Project],
       synchronize: true,
     }),
     UsersModule,
     ClientModule,
-    ProjectModule
+    ProjectModule,
   ],
   controllers: [AppController],
   providers: [AppService],
