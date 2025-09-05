@@ -13,7 +13,7 @@ import { Project } from './project/entities/project.entity';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: process.env.DB_HOST ||'localhost',
+      host: process.env.DB_HOST || 'mysql.lytehosting.com'|| 'localhost',
       port: Number(process.env.DB_PORT) || 3306,
       username: process.env.DB_USER || 'root',
       password: process.env.DB_PASS || '',
