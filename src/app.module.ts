@@ -24,6 +24,7 @@ import { Project } from './project/entities/project.entity';
         synchronize: true,
         retryAttempts: 10,        // keep retrying
         retryDelay: 5000, 
+        ssl: { rejectUnauthorized: false }, 
     }),
     UsersModule,
     ClientModule,
