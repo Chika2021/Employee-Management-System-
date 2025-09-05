@@ -19,8 +19,11 @@ import { Project } from './project/entities/project.entity';
       username: process.env.DB_USER || 'root',
       password: process.env.DB_PASS || '',
       database: process.env.DB_NAME || 'employee_db',
-      entities: [User, Client, Project],
-      // synchronize: true,
+      // entities: [User, Client, Project],
+      autoLoadEntities: true,   // no need to list entities manually
+        synchronize: true,
+        retryAttempts: 10,        // keep retrying
+        retryDelay: 5000, 
     }),
     UsersModule,
     ClientModule,
