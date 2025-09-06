@@ -22,7 +22,7 @@ export class AppService {
           <div class="card">
             <h1>Employment Management System</h1>
             <p>API is running. Welcome Robernix Industries🚀</p>
-            <a class="btn" href="robernixindustries.com">Open API Docs</a>
+            <a class="btn" href="https://robernixindustries.com">Connect with Us</a>
           </div>
         </body>
       </html>
