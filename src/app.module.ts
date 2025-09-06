@@ -12,19 +12,19 @@ import { Project } from './project/entities/project.entity';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'mysql',
+      type: 'postgres',
       // host: process.env.DB_HOST || 'localhost',
       host: process.env.DB_HOST,
-      port: Number(process.env.DB_PORT) || 3306,
-      username: process.env.DB_USER || 'root',
-      password: process.env.DB_PASS || '',
-      database: process.env.DB_NAME || 'employee_db',
+      port: Number(process.env.DB_PORT) || 5432,
+      username: process.env.DB_USER || 'postgres',
+      password: process.env.DB_PASS || 'chika',
+      database: process.env.DB_NAME || 'rwork',
       // entities: [User, Client, Project],
       autoLoadEntities: true,   // no need to list entities manually
         synchronize: true,
         retryAttempts: 10,        // keep retrying
         retryDelay: 5000, 
-        ssl: { rejectUnauthorized: false }, 
+        ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
     }),
     UsersModule,
     ClientModule,

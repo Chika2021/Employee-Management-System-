@@ -28,6 +28,13 @@ export class UsersService {
             name: 'Admin',
             email: 'testing@admin.com',
             password: await bcrypt.hash('Admin123', 10),
+            phoneNumber: '+2347063905874',
+            address: 'Robernix Industries',
+            city: 'Ikeja, Lagos',
+            country: 'Nigeria',
+            accountName: 'Robernix Admin',
+            accountNumber: '7063905874',
+            bankName: 'Opay Microfinance Bank',
             role: Role.ADMIN
         });
         await this.userRepository.save(admin);
