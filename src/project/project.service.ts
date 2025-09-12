@@ -28,7 +28,12 @@ export class ProjectService {
 
 
   async create(createProjectDto: CreateProjectDto) {
-    return await this.projectRepository.save(createProjectDto);
+    // Allow status to be set from DTO, fallback to default if not provided
+    const project = this.projectRepository.create({
+      ...createProjectDto,
+      status: createProjectDto.status || undefined,
+    });
+    return await this.projectRepository.save(project);
   }
 
   async findAll(status?:ProjectStatus) {

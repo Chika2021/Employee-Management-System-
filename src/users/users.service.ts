@@ -1,3 +1,4 @@
+
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { User, Role } from './model/user.model';
@@ -99,4 +100,39 @@ export class UsersService {
         return user;
     }
 
+    // Get all users with all their projects (for admin payment view)
+    
+    // users.service.ts
+async getUsersWithProjects() {
+    // Get all users and their clients and projects
+    const users = await this.userRepository.find({ relations: ['clients', 'clients.projects'] });
+    // Map to desired output
+    return users.map(user => {
+        // Gather all projects for this user from all their clients
+        const projects = (user.clients || []).flatMap(client => client.projects || []);
+        return {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+                projects: projects.map(project => ({
+                    id: project.id,
+                    name: project.projectName,
+                    price: project.price,
+                    amount: project.amount,
+                    status: project.status,
+                })),
+        };
+    });
 }
+
+
+async remove(id: number) {
+  return await this.userRepository.delete(id);
+}
+
+    
+
+}
+
+

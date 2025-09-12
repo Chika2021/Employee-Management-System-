@@ -1,4 +1,5 @@
 import { Client } from "src/client/entities/client.entity";
+import { User } from "src/users/model/user.model";
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 export enum ProjectStatus {
@@ -33,6 +34,9 @@ export class Project {
 
     @ManyToOne(() => Client, client => client.projects)
         client: Client;
+
+    @ManyToOne(() => User, user => user.projects)
+    user: User;
 
 
 

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User, Role } from './model/user.model';
 import { RolesGuard } from './role.guard';
@@ -19,7 +19,6 @@ export class UsersController {
         return await this.usersService.login(user);
     }
 
-
     @UseGuards(AuthGuard('jwt'), RolesGuard)
     @Roles(Role.ADMIN)
     @Get()
@@ -27,4 +26,19 @@ export class UsersController {
         return await this.usersService.findAll();
     }
 
+    // Admin: all users with all their projects (for payment)
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles(Role.ADMIN)
+    @Get('with-projects')
+    async getUsersWithProjects() {
+        return await this.usersService.getUsersWithProjects();
+    }
+
+
+    @UseGuards(AuthGuard('jwt'), RolesGuard)
+    @Roles(Role.ADMIN)
+    @Delete(':id')
+    async remove(@Param('id') id: number) {
+    return await this.usersService.remove(id);
+}
 }

@@ -13,18 +13,33 @@ export class DashboardService {
     private projectRepository: Repository<Project>,
   ) {}
 
-  async getSummary() {
-    const totalClients = await this.clientRepository.count();
-    const totalProjects = await this.projectRepository.count();
-    // Assuming Project entity has an 'amount' field
-    const { sum } = await this.projectRepository
-      .createQueryBuilder('project')
-      .select('SUM(project.amount)', 'sum')
-      .getRawOne();
+  async getSummary(userId: number) {
+    // Count clients belonging to the user
+    const totalClients = await this.clientRepository.count({ where: { user: { id: userId } } });
+    // Get all client IDs for this user
+    const userClients = await this.clientRepository.find({ where: { user: { id: userId } } });
+    const clientIds = userClients.map(c => c.id);
+    // Count projects for these clients
+    let totalProjects = 0;
+    let totalAmount = 0;
+    if (clientIds.length > 0) {
+      if (clientIds.length === 1) {
+        totalProjects = await this.projectRepository.count({ where: { client: { id: clientIds[0] } } });
+      } else {
+        totalProjects = await this.projectRepository.count({ where: clientIds.map(id => ({ client: { id } })) });
+      }
+      // Sum amount for these projects
+      const { sum } = await this.projectRepository
+        .createQueryBuilder('project')
+        .select('SUM(project.amount)', 'sum')
+        .where('project.clientId IN (:...clientIds)', { clientIds })
+        .getRawOne();
+      totalAmount = Number(sum) || 0;
+    }
     return {
       totalClients,
       totalProjects,
-      totalAmount: Number(sum) || 0,
+      totalAmount,
     };
   }
 }
